@@ -2,11 +2,11 @@ package eu.winwinit.bcc.controllers;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,7 +22,6 @@ import eu.winwinit.bcc.model.ArticoliRequests;
 import eu.winwinit.bcc.security.JwtTokenProvider;
 import eu.winwinit.bcc.service.ArticoliService;
 import eu.winwinit.bcc.service.UtenteService;
-import eu.winwinit.bcc.util.UtilClass;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -63,44 +62,35 @@ public class ArticoliController {
 	}
 
 	@PostMapping("/nuovoArticolo")
+	@Secured({AuthorityRolesConstants.ROLE_USER})
 	public ResponseEntity<?> createArticolo(
 			@RequestHeader(value = AuthorityRolesConstants.HEADER_STRING) String jwtToken,
 			@RequestBody ArticoliRequests articoliRequests) {
-		Set<String> rolesSetString = UtilClass
-				.fromGrantedAuthorityToStringSet(jwtTokenProvider.getRolesFromJWT(jwtToken));
-		if (rolesSetString.contains(AuthorityRolesConstants.ROLE_USER)) {
 			if (articoliService.createArticolo(articoliRequests) != null) {
 				return new ResponseEntity<>("nuovo articolo creato", HttpStatus.CREATED);
 			}
-		}
 		return new ResponseEntity<>("non è stato possibile creare un nuovo articolo",HttpStatus.OK);
 	}
 
 	@PutMapping(value = "/modificaArticolo")
+	@Secured({AuthorityRolesConstants.ROLE_USER})
 	public ResponseEntity<?> updateArticolo(
 			@RequestHeader(value = AuthorityRolesConstants.HEADER_STRING) String jwtToken,
 			@RequestBody ArticoliRequests articoliRequests) {
-		Set<String> rolesSetString = UtilClass
-				.fromGrantedAuthorityToStringSet(jwtTokenProvider.getRolesFromJWT(jwtToken));
-		if (rolesSetString.contains(AuthorityRolesConstants.ROLE_USER)) {
 			if (articoliService.updateArticolo(articoliRequests) != null) {
 				return new ResponseEntity<>("articolo modificato", HttpStatus.OK);
 			}
-		}
 		return new ResponseEntity<>("non è stato possibile modificare l'articolo",HttpStatus.OK);
 	}
 
 	@DeleteMapping("/eliminaArticolo/{code}")
+	@Secured({AuthorityRolesConstants.ROLE_USER})
 	public ResponseEntity<?> deleteArticolo(
 			@RequestHeader(value = AuthorityRolesConstants.HEADER_STRING) String jwtToken,
 			@PathVariable String code) {
-		Set<String> rolesSetString = UtilClass
-				.fromGrantedAuthorityToStringSet(jwtTokenProvider.getRolesFromJWT(jwtToken));
-		if (rolesSetString.contains(AuthorityRolesConstants.ROLE_USER)) {
 			if (articoliService.deleteArticolo(code) != null) {
 				return new ResponseEntity<>("articolo eliminato", HttpStatus.OK);
 			}
-		}
 		return new ResponseEntity<>("non è stato possibile eliminare l'articolo",HttpStatus.OK);
 	}
 }

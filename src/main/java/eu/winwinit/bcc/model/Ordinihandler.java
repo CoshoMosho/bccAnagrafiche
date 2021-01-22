@@ -4,38 +4,38 @@ import java.util.Date;
 import java.util.List;
 
 public class Ordinihandler {
-	private String cod_ordine;
-	private Date data_ordine;
+	private String codOrdine;
+	private Date dataOrdine;
 	private List<ArticoliQuantità> articoliList;
 
 	public Ordinihandler() {
 	}
 
-	public Ordinihandler(String cod_ordine, Date data_ordine, List<ArticoliQuantità> articoliList) {
+	public Ordinihandler(String codOrdine, Date dataOrdine, List<ArticoliQuantità> articoliList) {
 		super();
-		this.cod_ordine = cod_ordine;
-		this.data_ordine = data_ordine;
+		this.codOrdine = codOrdine;
+		this.dataOrdine = dataOrdine;
 		this.articoliList = articoliList;
 	}
 
-	public String getCod_ordine() {
-		return cod_ordine;
+	public String getCodOrdine() {
+		return codOrdine;
 	}
 
-	public Date getData_ordine() {
-		return data_ordine;
+	public Date getDataOrdine() {
+		return dataOrdine;
 	}
 
 	public List<ArticoliQuantità> getArticoliList() {
 		return articoliList;
 	}
 
-	public void setCod_ordine(String cod_ordine) {
-		this.cod_ordine = cod_ordine;
+	public void setCodOrdine(String codOrdine) {
+		this.codOrdine = codOrdine;
 	}
 
-	public void setData_ordine(Date data_ordine) {
-		this.data_ordine = data_ordine;
+	public void setDataOrdine(Date dataOrdine) {
+		this.dataOrdine = dataOrdine;
 	}
 
 	public void setArticoliList(List<ArticoliQuantità> articoliList) {

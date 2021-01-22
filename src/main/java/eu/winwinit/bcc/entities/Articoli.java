@@ -17,49 +17,48 @@ public class Articoli implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(name = "CODART", unique = true, nullable = false)
-	private String cod_art;
-	@Column(name = "NOMEPRODOTTO", unique = true, nullable = false)
-	private String nome_prodotto;
-	@Column(name = "DESCRIZIONE")
+	@Column(unique = true, nullable = false)
+	private String codiceArticolo;
+	@Column(unique = true, nullable = false)
+	private String nomeProdotto;
 	private String descrizione;
 
-	@OneToMany(mappedBy = "cod_ordine_fk")
-	private Set<DettagliOrdine> dettagli_ordine = new HashSet<>();
+	@OneToMany(mappedBy = "ordini")
+	private Set<DettagliOrdine> dettagliOrdine = new HashSet<>();
 
 	public Articoli() {
 	}
 
-	public String getCodArt() {
-		return cod_art;
+	public String getCodiceArticolo() {
+		return codiceArticolo;
 	}
 
 	public String getNomeProdotto() {
-		return nome_prodotto;
+		return nomeProdotto;
 	}
 
 	public String getDescrizione() {
 		return descrizione;
 	}
 
-	public void setCodArt(String codArt) {
-		this.cod_art = codArt;
+	public Set<DettagliOrdine> getDettagliOrdine() {
+		return dettagliOrdine;
+	}
+
+	public void setCodiceArticolo(String codiceArticolo) {
+		this.codiceArticolo = codiceArticolo;
 	}
 
 	public void setNomeProdotto(String nomeProdotto) {
-		this.nome_prodotto = nomeProdotto;
+		this.nomeProdotto = nomeProdotto;
 	}
 
 	public void setDescrizione(String descrizione) {
 		this.descrizione = descrizione;
 	}
 
-	public Set<DettagliOrdine> getDettagliOrdine() {
-		return dettagli_ordine;
-	}
-
 	public void setDettagliOrdine(Set<DettagliOrdine> dettagliOrdine) {
-		this.dettagli_ordine = dettagliOrdine;
+		this.dettagliOrdine = dettagliOrdine;
 	}
 
 }

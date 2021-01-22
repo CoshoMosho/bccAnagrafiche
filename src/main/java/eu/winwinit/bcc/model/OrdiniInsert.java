@@ -3,28 +3,28 @@ package eu.winwinit.bcc.model;
 import java.util.List;
 
 public class OrdiniInsert {
-	private String cod_ordine;
+	private String codOrdine;
 	private List<ArticoliQuantità> articoliList;
 
 	public OrdiniInsert() {
 	}
 
-	public OrdiniInsert(String cod_ordine, List<ArticoliQuantità> articoliList) {
+	public OrdiniInsert(String codOrdine, List<ArticoliQuantità> articoliList) {
 		super();
-		this.cod_ordine = cod_ordine;
+		this.codOrdine = codOrdine;
 		this.articoliList = articoliList;
 	}
 
-	public String getCod_ordine() {
-		return cod_ordine;
+	public String getCodOrdine() {
+		return codOrdine;
 	}
 
 	public List<ArticoliQuantità> getArticoliList() {
 		return articoliList;
 	}
 
-	public void setCod_ordine(String cod_ordine) {
-		this.cod_ordine = cod_ordine;
+	public void setCodOrdine(String codOrdine) {
+		this.codOrdine = codOrdine;
 	}
 
 	public void setArticoliList(List<ArticoliQuantità> articoliList) {

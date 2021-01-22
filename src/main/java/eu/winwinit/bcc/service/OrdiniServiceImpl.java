@@ -15,7 +15,7 @@ import eu.winwinit.bcc.model.ArticoliQuantità;
 import eu.winwinit.bcc.model.OrdiniInsert;
 import eu.winwinit.bcc.model.Ordinihandler;
 import eu.winwinit.bcc.repository.ArticoliRepository;
-import eu.winwinit.bcc.repository.DettagliOrdiniRepository;
+import eu.winwinit.bcc.repository.DettagliOrdineRepository;
 import eu.winwinit.bcc.repository.OrdiniRepository;
 
 @Service
@@ -28,7 +28,7 @@ public class OrdiniServiceImpl implements OrdiniService {
 	OrdiniRepository ordiniRepository;
 
 	@Autowired
-	DettagliOrdiniRepository dettagliOrdiniRepository;
+	DettagliOrdineRepository dettagliOrdiniRepository;
 
 	@Override
 	public List<Ordinihandler> findAll() {
@@ -38,17 +38,17 @@ public class OrdiniServiceImpl implements OrdiniService {
 			return null;
 		}
 		for (DettagliOrdine dettagliOrdine : dettagliOrdini) {
-			ArticoliQuantità artquant = new ArticoliQuantità(dettagliOrdine.getCodArt().getCodArt(),
+			ArticoliQuantità artquant = new ArticoliQuantità(dettagliOrdine.getArticolo().getCodiceArticolo(),
 					dettagliOrdine.getQuantità());
-			if (ordini.containsKey(dettagliOrdine.getCodOrdine().getCodOrdine())) {
-				ordini.get(dettagliOrdine.getCodOrdine().getCodOrdine()).getArticoliList().add(artquant);
+			if (ordini.containsKey(dettagliOrdine.getOrdine().getCodiceOrdine())) {
+				ordini.get(dettagliOrdine.getOrdine().getCodiceOrdine()).getArticoliList().add(artquant);
 			} else {
 				Ordinihandler ordine = new Ordinihandler();
-				ordine.setCod_ordine(dettagliOrdine.getCodOrdine().getCodOrdine());
-				ordine.setData_ordine(dettagliOrdine.getCodOrdine().getDataOrdine());
+				ordine.setCodOrdine(dettagliOrdine.getOrdine().getCodiceOrdine());
+				ordine.setDataOrdine(dettagliOrdine.getOrdine().getDataOrdine());
 				ordine.setArticoliList(new ArrayList<ArticoliQuantità>());
 				ordine.getArticoliList().add(artquant);
-				ordini.put(dettagliOrdine.getCodOrdine().getCodOrdine(), ordine);
+				ordini.put(dettagliOrdine.getOrdine().getCodiceOrdine(), ordine);
 			}
 		}
 		return new ArrayList<Ordinihandler>(ordini.values());
@@ -56,20 +56,20 @@ public class OrdiniServiceImpl implements OrdiniService {
 
 	@Override
 	public Ordinihandler findByCode(String code) {
-		Ordini ordini = ordiniRepository.findByCode(code);
+		Ordini ordini = ordiniRepository.findByCodiceOrdine(code);
 		if (ordini == null) {
 			return null;
 		}
-		List<DettagliOrdine> dettagliOrdini = dettagliOrdiniRepository.findByCode(ordini);
+		List<DettagliOrdine> dettagliOrdini = dettagliOrdiniRepository.findByOrdini(ordini);
 		if (dettagliOrdini == null) {
 			return null;
 		}
 		Ordinihandler ordine = new Ordinihandler();
-		ordine.setCod_ordine(dettagliOrdini.get(0).getCodOrdine().getCodOrdine());
-		ordine.setData_ordine(dettagliOrdini.get(0).getCodOrdine().getDataOrdine());
+		ordine.setCodOrdine(dettagliOrdini.get(0).getOrdine().getCodiceOrdine());
+		ordine.setDataOrdine(dettagliOrdini.get(0).getOrdine().getDataOrdine());
 		ordine.setArticoliList(new ArrayList<ArticoliQuantità>());
 		for (DettagliOrdine dettagliOrdine : dettagliOrdini) {
-			ArticoliQuantità artquant = new ArticoliQuantità(dettagliOrdine.getCodArt().getCodArt(),
+			ArticoliQuantità artquant = new ArticoliQuantità(dettagliOrdine.getArticolo().getCodiceArticolo(),
 					dettagliOrdine.getQuantità());
 			ordine.getArticoliList().add(artquant);
 		}
@@ -79,20 +79,19 @@ public class OrdiniServiceImpl implements OrdiniService {
 	@Override
 	public Ordini creaOrdine(OrdiniInsert ordineReq) {
 		Ordini ordine = new Ordini();
-		ordine.setCodOrdine(ordineReq.getCod_ordine());
-		// controllare @prepersist e questione date
+		ordine.setCodiceOrdine(ordineReq.getCodOrdine());
 		ordine.setDataOrdine(new Date());
-		if (ordiniRepository.findByCode(ordineReq.getCod_ordine()) != null) {
+		if (ordiniRepository.findByCodiceOrdine(ordineReq.getCodOrdine()) != null) {
 			return null;
 		}
 		for (ArticoliQuantità articoloQuantità : ordineReq.getArticoliList()) {
-			Articoli articolo = articoliRepository.findByCode(articoloQuantità.getCodArt());
+			Articoli articolo = articoliRepository.findByCodiceArticolo(articoloQuantità.getCodArt());
 			if (articolo == null) {
 				continue;
 			}
 			DettagliOrdine dettagliOrdine = new DettagliOrdine();
-			dettagliOrdine.setCodOrdine(ordine);
-			dettagliOrdine.setCodArt(articolo);
+			dettagliOrdine.setOrdine(ordine);
+			dettagliOrdine.setArticolo(articolo);
 			dettagliOrdine.setQuantità(articoloQuantità.getQuantità());
 			ordiniRepository.save(ordine);
 			dettagliOrdiniRepository.save(dettagliOrdine);
@@ -102,22 +101,22 @@ public class OrdiniServiceImpl implements OrdiniService {
 
 	@Override
 	public Ordini aggiornaOrdine(Ordinihandler ordineReq) {
-		Ordini ordineDaModificare = ordiniRepository.findByCode(ordineReq.getCod_ordine());
+		Ordini ordineDaModificare = ordiniRepository.findByCodiceOrdine(ordineReq.getCodOrdine());
 		if (ordineDaModificare == null) {
 			return null;
 		}
 		Ordini ordine = new Ordini();
-		ordine.setCodOrdine(ordineReq.getCod_ordine());
+		ordine.setCodiceOrdine(ordineReq.getCodOrdine());
 		ordine.setDataOrdine(new Date());
 		List<DettagliOrdine> listadettagli = new ArrayList<DettagliOrdine>();
 		for (ArticoliQuantità articoloQuantità : ordineReq.getArticoliList()) {
-			Articoli articolo = articoliRepository.findByCode(articoloQuantità.getCodArt());
+			Articoli articolo = articoliRepository.findByCodiceArticolo(articoloQuantità.getCodArt());
 			if (articolo == null) {
 				continue;
 			}
 			DettagliOrdine dettagliOrdine = new DettagliOrdine();
-			dettagliOrdine.setCodOrdine(ordine);
-			dettagliOrdine.setCodArt(articolo);
+			dettagliOrdine.setOrdine(ordine);
+			dettagliOrdine.setArticolo(articolo);
 			dettagliOrdine.setQuantità(articoloQuantità.getQuantità());
 			listadettagli.add(dettagliOrdine);
 
@@ -132,7 +131,7 @@ public class OrdiniServiceImpl implements OrdiniService {
 
 	@Override
 	public String eliminaOrdine(String code) {
-		Ordini ordine = ordiniRepository.findByCode(code);
+		Ordini ordine = ordiniRepository.findByCodiceOrdine(code);
 		if (ordine == null) {
 			return null;
 		}

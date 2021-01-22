@@ -1,40 +1,39 @@
 package eu.winwinit.bcc.model;
 
-//serializable??
 public class ArticoliRequests {
 
-	private String cod_art;
-	private String nome_prodotto;
+	private String codArt;
+	private String nomeProdotto;
 	private String descrizione;
 
 	public ArticoliRequests() {
 	}
 
-	public ArticoliRequests(String cod_art, String nome_prodotto, String descrizione) {
+	public ArticoliRequests(String codArt, String nome_prodotto, String descrizione) {
 		super();
-		this.cod_art = cod_art;
-		this.nome_prodotto = nome_prodotto;
+		this.codArt = codArt;
+		this.nomeProdotto = nome_prodotto;
 		this.descrizione = descrizione;
 	}
 
-	public String getCod_art() {
-		return cod_art;
+	public String getCodArt() {
+		return codArt;
 	}
 
-	public String getNome_prodotto() {
-		return nome_prodotto;
+	public String getNomeProdotto() {
+		return nomeProdotto;
 	}
 
 	public String getDescrizione() {
 		return descrizione;
 	}
 
-	public void setCod_art(String cod_art) {
-		this.cod_art = cod_art;
+	public void setCodArt(String codArt) {
+		this.codArt = codArt;
 	}
 
-	public void setNome_prodotto(String nome_prodotto) {
-		this.nome_prodotto = nome_prodotto;
+	public void setNomeProdotto(String nomeProdotto) {
+		this.nomeProdotto = nomeProdotto;
 	}
 
 	public void setDescrizione(String descrizione) {

@@ -16,17 +16,17 @@ import javax.persistence.Table;
 public class DettagliOrdine implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 
 	@ManyToOne
-	@JoinColumn(name = "CODART")
-	private Articoli cod_art_fk;
+	@JoinColumn(name = "codiceArticolo")
+	private Articoli articolo;
 	@ManyToOne
-	@JoinColumn(name = "CODORDINE")
-	private Ordini cod_ordine_fk;
+	@JoinColumn(name = "codiceOrdine")
+	private Ordini ordini;
 
 	@Column(name = "quantità")
 	private int quantità;
@@ -38,12 +38,12 @@ public class DettagliOrdine implements Serializable {
 		return id;
 	}
 
-	public Articoli getCodArt() {
-		return cod_art_fk;
+	public Articoli getArticolo() {
+		return articolo;
 	}
 
-	public Ordini getCodOrdine() {
-		return cod_ordine_fk;
+	public Ordini getOrdine() {
+		return ordini;
 	}
 
 	public int getQuantità() {
@@ -54,12 +54,12 @@ public class DettagliOrdine implements Serializable {
 		this.id = id;
 	}
 
-	public void setCodArt(Articoli codArt) {
-		this.cod_art_fk = codArt;
+	public void setArticolo(Articoli articolo) {
+		this.articolo = articolo;
 	}
 
-	public void setCodOrdine(Ordini codOrdine) {
-		this.cod_ordine_fk = codOrdine;
+	public void setOrdine(Ordini ordine) {
+		this.ordini = ordine;
 	}
 
 	public void setQuantità(int quantità) {

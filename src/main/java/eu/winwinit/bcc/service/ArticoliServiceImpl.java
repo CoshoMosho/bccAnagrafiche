@@ -3,7 +3,6 @@ package eu.winwinit.bcc.service;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hibernate.transform.AliasToEntityMapResultTransformer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,8 +21,8 @@ public class ArticoliServiceImpl implements ArticoliService {
 		List<ArticoliRequests> list = new ArrayList<ArticoliRequests>();
 		for (Articoli articoli : articoliRepository.findAll()) {
 			ArticoliRequests articoloreq = new ArticoliRequests();
-			articoloreq.setCod_art(articoli.getCodArt());
-			articoloreq.setNome_prodotto(articoli.getNomeProdotto());
+			articoloreq.setCodArt(articoli.getCodiceArticolo());
+			articoloreq.setNomeProdotto(articoli.getNomeProdotto());
 			articoloreq.setDescrizione(articoli.getDescrizione());
 			list.add(articoloreq);
 		}
@@ -32,13 +31,13 @@ public class ArticoliServiceImpl implements ArticoliService {
 
 	@Override
 	public ArticoliRequests findByCode(String codArt) {
-		Articoli articolo = articoliRepository.findByCode(codArt);
+		Articoli articolo = articoliRepository.findByCodiceArticolo(codArt);
 		if (articolo == null) {
 			return null;
 		}
 		ArticoliRequests articoloreq = new ArticoliRequests();
-		articoloreq.setCod_art(codArt);
-		articoloreq.setNome_prodotto(articolo.getNomeProdotto());
+		articoloreq.setCodArt(codArt);
+		articoloreq.setNomeProdotto(articolo.getNomeProdotto());
 		articoloreq.setDescrizione(articolo.getDescrizione());
 		return articoloreq;
 	}
@@ -51,8 +50,8 @@ public class ArticoliServiceImpl implements ArticoliService {
 				continue;
 			}
 			ArticoliRequests articoloreq = new ArticoliRequests();
-			articoloreq.setCod_art(articoli.getCodArt());
-			articoloreq.setNome_prodotto(articoli.getNomeProdotto());
+			articoloreq.setCodArt(articoli.getCodiceArticolo());
+			articoloreq.setNomeProdotto(articoli.getNomeProdotto());
 			articoloreq.setDescrizione(articoli.getDescrizione());
 			list.add(articoloreq);
 		}
@@ -61,33 +60,33 @@ public class ArticoliServiceImpl implements ArticoliService {
 
 	@Override
 	public Articoli createArticolo(ArticoliRequests articoliRequests) {
-		if (articoliRepository.findByCode(articoliRequests.getCod_art()) != null || articoliRequests.getNome_prodotto()==null) {
+		if (articoliRepository.findByCodiceArticolo(articoliRequests.getCodArt()) != null || articoliRequests.getNomeProdotto()==null) {
 			return null;
 		}
 		Articoli articolo = new Articoli();
-		articolo.setCodArt(articoliRequests.getCod_art());
+		articolo.setCodiceArticolo(articoliRequests.getCodArt());
 		articolo.setDescrizione(articoliRequests.getDescrizione());
-		articolo.setNomeProdotto(articoliRequests.getNome_prodotto());
+		articolo.setNomeProdotto(articoliRequests.getNomeProdotto());
 		return articoliRepository.save(articolo);
 	}
 
 	@Override
 	public Articoli updateArticolo(ArticoliRequests articoliRequests) {
-		Articoli articoloEsistente = articoliRepository.findByCode(articoliRequests.getCod_art());
-		if (articoloEsistente == null || articoliRequests.getNome_prodotto()==null) {
+		Articoli articoloEsistente = articoliRepository.findByCodiceArticolo(articoliRequests.getCodArt());
+		if (articoloEsistente == null || articoliRequests.getNomeProdotto()==null) {
 			return null;
 		}
 		Articoli articolo = new Articoli();
-		articolo.setCodArt(articoloEsistente.getCodArt());
+		articolo.setCodiceArticolo(articoloEsistente.getCodiceArticolo());
 		articolo.setDescrizione(articoliRequests.getDescrizione());
-		articolo.setNomeProdotto(articoliRequests.getNome_prodotto());
+		articolo.setNomeProdotto(articoliRequests.getNomeProdotto());
 		
 		return articoliRepository.save(articolo);
 	}
 
 	@Override
 	public Articoli deleteArticolo(String code) {
-		Articoli articolo = articoliRepository.findByCode(code);
+		Articoli articolo = articoliRepository.findByCodiceArticolo(code);
 		if (articolo == null) {
 			return null;
 		}

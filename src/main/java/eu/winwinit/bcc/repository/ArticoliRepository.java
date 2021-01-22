@@ -11,8 +11,7 @@ public interface ArticoliRepository extends JpaRepository<Articoli, Integer> {
 
 	List<Articoli> findAll();
 
-	@Query(value = "select c " + "FROM Articoli c " + "WHERE cod_art =:codArt ")
-	public Articoli findByCode(String codArt);
+	public Articoli findByCodiceArticolo(String codiceArticolo);
 
 	@Query(value = "select c " + "FROM Articoli c " + "WHERE nomeProdotto LIKE %:nomeProdotto% ")
 	public List<Articoli> findByNameLike(String nomeProdotto);

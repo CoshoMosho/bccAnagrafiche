@@ -21,46 +21,45 @@ public class Ordini implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(name = "CODORDINE", unique = true, nullable = false)
-	private String cod_ordine;
+	@Column(unique = true, nullable = false)
+	private String codiceOrdine;
 
 	@Temporal(TemporalType.DATE)
-	@Column(name = "DATAORDINE")
-	private Date data_ordine;
+	private Date dataOrdine;
 
-	@OneToMany(mappedBy = "cod_art_fk")
-	private Set<DettagliOrdine> dettagli_ordine = new HashSet<>();
+	@OneToMany(mappedBy = "articolo")
+	private Set<DettagliOrdine> dettagliOrdine = new HashSet<>();
 
 	@PrePersist
 	protected void onCreate() {
-		this.data_ordine = new Date();
+		this.dataOrdine = new Date();
 	}
 
 	public Ordini() {
 	}
 
-	public String getCodOrdine() {
-		return cod_ordine;
+	public String getCodiceOrdine() {
+		return codiceOrdine;
 	}
 
 	public Date getDataOrdine() {
-		return data_ordine;
-	}
-
-	public void setCodOrdine(String codOrdine) {
-		this.cod_ordine = codOrdine;
-	}
-
-	public void setDataOrdine(Date dataOrdine) {
-		this.data_ordine = dataOrdine;
+		return dataOrdine;
 	}
 
 	public Set<DettagliOrdine> getDettagliOrdine() {
-		return dettagli_ordine;
+		return dettagliOrdine;
+	}
+
+	public void setCodiceOrdine(String codiceOrdine) {
+		this.codiceOrdine = codiceOrdine;
+	}
+
+	public void setDataOrdine(Date dataOrdine) {
+		this.dataOrdine = dataOrdine;
 	}
 
 	public void setDettagliOrdine(Set<DettagliOrdine> dettagliOrdine) {
-		this.dettagli_ordine = dettagliOrdine;
+		this.dettagliOrdine = dettagliOrdine;
 	}
 
 }
